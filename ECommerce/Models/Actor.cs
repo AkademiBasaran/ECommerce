@@ -34,4 +34,9 @@ public class Actor
 
     }
 
+    void Method2() 
+    {
+
+    }
+
 }
