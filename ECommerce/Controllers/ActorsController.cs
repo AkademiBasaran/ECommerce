@@ -24,9 +24,7 @@ public class ActorsController : Controller
     {
         return View();
     }
-
-
-    //[Bind("Id,FullName,Bio,ProfilePictureUrl")]
+   
     [HttpPost]
     public async Task<IActionResult> Create(Actor actor)
     {
