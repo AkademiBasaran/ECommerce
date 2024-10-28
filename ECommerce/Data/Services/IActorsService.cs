@@ -14,5 +14,5 @@ public interface IActorsService
 
     Task<Actor> UpdateAsync(Actor newActor);
 
-    void Delete(int id);
+    Task DeleteAsync(int id);
 }

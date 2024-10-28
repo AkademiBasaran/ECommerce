@@ -19,7 +19,7 @@ public class ActorsController : Controller
         return View(allActors);
     }
 
-
+    [HttpGet]
     public async Task<IActionResult> Create()
     {
         return View();
@@ -48,5 +48,47 @@ public class ActorsController : Controller
         }
 
         return View(actorDetail);
+    }
+
+
+    public async Task<IActionResult> Edit(int id)
+    {
+        var actorDetail = await _service.GetByIdAsync(id);
+        if (actorDetail is null)
+        {
+            return View("Empty");
+        }
+
+        return View(actorDetail);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(Actor actor)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(actor);
+        }
+
+        await _service.UpdateAsync(actor);
+        return RedirectToAction(nameof(Index));
+    }
+
+    public async Task<IActionResult> Delete(int id)
+    {
+        var actorDetail = await _service.GetByIdAsync(id);
+        if (actorDetail is null)
+        {
+            return View("Empty");
+        }
+
+        return View(actorDetail);
+    }
+
+    [HttpPost,ActionName("Delete")]
+    public async Task<IActionResult> DeleteConfirmed(int Id)
+    { 
+        await _service.DeleteAsync(Id);
+        return RedirectToAction(nameof(Index));
     }
 }

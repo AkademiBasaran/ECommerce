@@ -34,13 +34,13 @@ public class ActorsService : IActorsService
         return newActor;
     }
 
-    public void Delete(int id)
+    public async Task DeleteAsync(int id)
     {
         Actor actor = _context.Actors.FirstOrDefault(x => x.Id == id);
         if (actor is not null)
         {
             _context.Actors.Remove(actor);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
     }
 
