@@ -16,7 +16,7 @@ public class ActorsController : Controller
     public async Task<IActionResult> Index()
     {
         var allActors = await _service.GetAllAsync();
-        return View(allActors);
+        return View(allActors);     
     }
 
     [HttpGet]
@@ -24,9 +24,7 @@ public class ActorsController : Controller
     {
         return View();
     }
-
-
-    //[Bind("Id,FullName,Bio,ProfilePictureUrl")]
+   
     [HttpPost]
     public async Task<IActionResult> Create(Actor actor)
     {

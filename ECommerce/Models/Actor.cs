@@ -29,4 +29,9 @@ public class Actor
     [ValidateNever]
     public List<Actor_Movie> Actors_Movies { get; set; }
 
+    void method() 
+    {
+
+    }
+
 }
