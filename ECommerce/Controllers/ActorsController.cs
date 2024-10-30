@@ -40,9 +40,9 @@ public class ActorsController : Controller
     public async Task<IActionResult> Detail(int id)
     {
         var actorDetail = await _service.GetByIdAsync(id);
-        if (actorDetail is null)
+        if (actorDetail.Id == 0)
         {
-            return View("Empty");
+            return View("_NotFound");
         }
 
         return View(actorDetail);
@@ -52,9 +52,9 @@ public class ActorsController : Controller
     public async Task<IActionResult> Edit(int id)
     {
         var actorDetail = await _service.GetByIdAsync(id);
-        if (actorDetail is null)
+        if (actorDetail.Id == 0)
         {
-            return View("Empty");
+            return View("_NotFound");
         }
 
         return View(actorDetail);
@@ -75,9 +75,9 @@ public class ActorsController : Controller
     public async Task<IActionResult> Delete(int id)
     {
         var actorDetail = await _service.GetByIdAsync(id);
-        if (actorDetail is null)
+        if (actorDetail.Id == 0)
         {
-            return View("Empty");
+            return View("_NotFound");
         }
 
         return View(actorDetail);
