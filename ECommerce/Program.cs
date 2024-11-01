@@ -13,6 +13,7 @@ public class Program
         // Add services to the container.
 
         builder.Services.AddScoped<IActorsService, ActorsService>();
+        builder.Services.AddScoped<IProducersService, ProducersService>();
 
         builder.Services.AddControllersWithViews();
         builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer("Data Source=UY04-OGRT\\SQLEXPRESS;Initial Catalog=ECommerceDb;Integrated Security=True;Pooling=False;Encrypt=True;Trust Server Certificate=True"));
