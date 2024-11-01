@@ -24,19 +24,16 @@ public class EntityBaseRepository<T> : IEntityBaseRepository<T> where T : class,
         entityEntry.State = EntityState.Deleted;
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync()
-    {
-        return await _context.Set<T>().ToListAsync();
-    }
+    public async Task<IEnumerable<T>> GetAllAsync() => await _context.Set<T>().ToListAsync();
 
-    public async Task<T> GetByIdAsync(int id)
-    {
-        return await _context.Set<T>().FirstOrDefaultAsync(a => a.Id == id);
-    }
+    public async Task<T> GetByIdAsync(int id) => await _context.Set<T>().FirstOrDefaultAsync(a => a.Id == id);
 
     public async Task UpdateAsync(T entity)
     {
         EntityEntry entityEntry = _context.Entry<T>(entity);
         entityEntry.State = EntityState.Modified;
+
+        await _context.SaveChangesAsync();
     }
 }
+
