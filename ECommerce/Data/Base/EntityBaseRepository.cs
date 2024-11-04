@@ -22,6 +22,7 @@ public class EntityBaseRepository<T> : IEntityBaseRepository<T> where T : class,
         var entity = await GetByIdAsync(id);
         EntityEntry entityEntry = _context.Entry<T>(entity);
         entityEntry.State = EntityState.Deleted;
+        await _context.SaveChangesAsync();
     }
 
     public async Task<IEnumerable<T>> GetAllAsync() => await _context.Set<T>().ToListAsync();

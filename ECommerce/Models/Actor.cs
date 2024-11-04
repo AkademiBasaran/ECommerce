@@ -29,10 +29,4 @@ public class Actor : IEntityBase
 
     [ValidateNever]
     public List<Actor_Movie> Actors_Movies { get; set; }
-
-    void method()
-    {
-
-    }
-
 }
