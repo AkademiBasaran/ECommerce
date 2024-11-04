@@ -1,24 +1,20 @@
-﻿using ECommerce.Data;
+﻿using ECommerce.Data.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Controllers;
 
 public class MoviesController : Controller
 {
-    readonly AppDbContext _context;
+    readonly IMoviesService _service;
 
-    public MoviesController(AppDbContext context)
+    public MoviesController(IMoviesService service)
     {
-        _context = context;
+        _service = service;
     }
 
     public async Task<IActionResult> Index()
     {
-        var allMovies = await _context.Movies
-            .Include(m=> m.Cinema)
-            .OrderByDescending(m=> m.StartDate)
-            .ToListAsync();
+        var allMovies = await _service.GetAllAsync(m => m.Cinema);
         return View(allMovies);
     }
 }
