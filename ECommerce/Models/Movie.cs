@@ -16,10 +16,7 @@ public class Movie : IEntityBase
     public string ImageUrl { get; set; } = string.Empty;
     public DateTime StartDate { get; set; }
     public DateTime EndDate { get; set; }
-    public MovieCategory MovieCategory { get; set; }
-
-
-    
+    public MovieCategory MovieCategory { get; set; }    
     
     //Relationships
     [ValidateNever]

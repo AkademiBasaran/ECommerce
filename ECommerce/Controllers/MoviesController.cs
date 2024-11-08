@@ -25,5 +25,8 @@ public class MoviesController : Controller
         return View(movieDetail);
     }
 
-
+    public async Task<IActionResult> Create()
+    {
+        return View();
+    }
 }

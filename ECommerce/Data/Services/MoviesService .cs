@@ -1,5 +1,6 @@
 ﻿using ECommerce.Data.Base;
 using ECommerce.Models;
+using ECommerce.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Data.Services;
@@ -22,5 +23,17 @@ public class MoviesService : EntityBaseRepository<Movie>, IMoviesService
             .FirstOrDefaultAsync(n => n.Id == id);
 
         return movieDetails;
+    }
+
+    public async Task<MovieDropdowns> GetMovieDropdownsValuesAsync()
+    {
+        var response = new MovieDropdowns()
+        {
+            Actors = await _context.Actors.OrderBy(c => c.FullName).ToListAsync(),
+            Cinemas = await _context.Cinemas.OrderBy(c => c.Name).ToListAsync(),
+            Producers = await _context.Producers.OrderBy(c => c.FullName).ToListAsync()
+        };
+
+        return response;
     }
 }
