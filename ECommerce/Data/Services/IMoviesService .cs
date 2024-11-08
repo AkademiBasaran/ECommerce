@@ -9,4 +9,6 @@ public interface IMoviesService : IEntityBaseRepository<Movie>
     Task<Movie> GetMovieByIdAsync(int id);
 
     Task<MovieDropdowns> GetMovieDropdownsValuesAsync();
+
+    Task AddMovieAsync(MovieVM movie);
 }

@@ -36,4 +36,37 @@ public class MoviesService : EntityBaseRepository<Movie>, IMoviesService
 
         return response;
     }
+
+    public async Task AddMovie(MovieVM movie)
+    {
+        var newMovie = new Movie() 
+        {
+            CinemaId = movie.CinemaId,
+            Description = movie.Description,
+            EndDate = movie.EndDate,
+            ImageUrl = movie.ImageUrl,
+            MovieCategory = movie.MovieCategory,
+            Name = movie.Name,
+            Price = movie.Price,
+            ProducerId = movie.ProducerId,
+            StartDate = movie.StartDate
+        };
+
+        await _context.Movies.AddAsync(newMovie);
+        await _context.SaveChangesAsync();
+
+        foreach (var actorId in movie.ActorIds)
+        {
+            var newActorMovie = new Actor_Movie 
+            {
+                ActorId = actorId,
+                MovieId = newMovie.Id
+            };
+
+            await _context.Actors_Movies.AddAsync(newActorMovie);
+        }
+
+        await _context.SaveChangesAsync();
+
+    }
 }
