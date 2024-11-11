@@ -49,4 +49,51 @@ public class MoviesController : Controller
         await _service.AddMovieAsync(movie);
         return RedirectToAction(nameof(Index));
     }
+
+
+    public async Task<IActionResult> Edit(int id)
+    {
+        var existingMovie = await _service.GetMovieByIdAsync(id);
+        if (existingMovie is null) return View("_NotFound");
+
+        var response = new MovieVM() 
+        {
+            Id = existingMovie.Id,
+            Description = existingMovie.Description,
+            ImageUrl = existingMovie.ImageUrl,
+            EndDate = existingMovie.EndDate,
+            MovieCategory = existingMovie.MovieCategory,
+            Name = existingMovie.Name,
+            Price = existingMovie.Price,
+            CinemaId = existingMovie.CinemaId,
+            ProducerId = existingMovie.ProducerId,
+            StartDate = existingMovie.StartDate,
+            ActorIds = existingMovie.Actors_Movies.Select(a => a.ActorId).ToList()
+        };
+
+        var movieDropdowns = await _service.GetMovieDropdownsValuesAsync();
+
+        ViewBag.Cinemas = new SelectList(movieDropdowns.Cinemas, "Id", "Name");
+        ViewBag.Producers = new SelectList(movieDropdowns.Producers, "Id", "FullName");
+        ViewBag.Actors = new SelectList(movieDropdowns.Actors, "Id", "FullName");
+
+        return View(response);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Edit(MovieVM movie)
+    {
+        if (movie.Id == 0)
+        {
+            return View("_NotFound");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return View(movie);
+        }
+
+        await _service.UpdateMovieAsync(movie);
+        return RedirectToAction(nameof(Index));
+    }
 }

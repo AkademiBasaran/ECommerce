@@ -37,9 +37,9 @@ public class MoviesService : EntityBaseRepository<Movie>, IMoviesService
         return response;
     }
 
-    public async Task AddMovie(MovieVM movie)
+    public async Task AddMovieAsync(MovieVM movie)
     {
-        var newMovie = new Movie() 
+        var newMovie = new Movie()
         {
             CinemaId = movie.CinemaId,
             Description = movie.Description,
@@ -57,7 +57,7 @@ public class MoviesService : EntityBaseRepository<Movie>, IMoviesService
 
         foreach (var actorId in movie.ActorIds)
         {
-            var newActorMovie = new Actor_Movie 
+            var newActorMovie = new Actor_Movie
             {
                 ActorId = actorId,
                 MovieId = newMovie.Id
@@ -68,5 +68,47 @@ public class MoviesService : EntityBaseRepository<Movie>, IMoviesService
 
         await _context.SaveChangesAsync();
 
+    }
+
+    public async Task UpdateMovieAsync(MovieVM movie)
+    {
+        var existingMovie = _context.Movies.FirstOrDefault(m => m.Id == movie.Id);
+
+        if (existingMovie != null)
+        {
+            existingMovie.CinemaId = movie.CinemaId;
+            existingMovie.Description = movie.Description;
+            existingMovie.EndDate = movie.EndDate;
+            existingMovie.ImageUrl = movie.ImageUrl;
+            existingMovie.MovieCategory = movie.MovieCategory;
+            existingMovie.Name = movie.Name;
+            existingMovie.Price = movie.Price;
+            existingMovie.ProducerId = movie.ProducerId;
+            existingMovie.StartDate = movie.StartDate;
+            await _context.SaveChangesAsync();
+
+            //remove old actor ıds
+
+            var existingActors = _context.Actors_Movies.Where(a => a.MovieId == movie.Id).ToList();
+            _context.Actors_Movies.RemoveRange(existingActors);
+            await _context.SaveChangesAsync();
+
+
+            foreach (var actorId in movie.ActorIds)
+            {
+                var newActorMovie = new Actor_Movie
+                {
+                    ActorId = actorId,
+                    MovieId = movie.Id
+                };
+
+                await _context.Actors_Movies.AddAsync(newActorMovie);
+            }
+
+        }
+
+
+
+        await _context.SaveChangesAsync();
     }
 }

@@ -12,10 +12,11 @@
                         <div class="card-header text-white bg-info">
                             <p class="card-text">
                                 <h5 class="card-title">
+                                    <a class="text-white d-flex justify-content-end" 
+                                    asp-action="Edit" asp-route-id="@item.Id">
+                                    <i class="bi bi-pencil-square"></i>
                                     @item.Name
-
-                                    <a class="text-white d-flex justify-content-end" asp-action="Edit" asp-route-id="@item.Id"><i class="bi bi-pencil-square"></i></a>
-
+                                    </a>
                                 </h5>
                             </p>
                         </div>

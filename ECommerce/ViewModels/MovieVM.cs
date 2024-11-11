@@ -5,6 +5,8 @@ namespace ECommerce.Models;
 
 public class MovieVM 
 {
+    public int Id { get; set; }
+
     [Display(Name ="Film Adı")]
     [Required(ErrorMessage ="Film adı gereklidir")]
     public string Name { get; set; } = string.Empty;
