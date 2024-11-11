@@ -96,4 +96,18 @@ public class MoviesController : Controller
         await _service.UpdateMovieAsync(movie);
         return RedirectToAction(nameof(Index));
     }
+
+    public async Task<IActionResult> Filter(string searchString) 
+    {
+        var allMovies = await _service.GetAllAsync(m => m.Cinema);
+        
+        if (!string.IsNullOrEmpty(searchString.ToLower())) 
+        {
+            var filteredResult = allMovies.Where(m => m.Name.ToLower().Contains(searchString)
+                                                 || m.Description.ToLower().Contains(searchString))
+                                                 .ToList();
+            return View("Index",filteredResult);
+        }
+        return View(allMovies);
+    }
 }
