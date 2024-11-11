@@ -56,7 +56,7 @@ public class MoviesController : Controller
         var existingMovie = await _service.GetMovieByIdAsync(id);
         if (existingMovie is null) return View("_NotFound");
 
-        var response = new MovieVM() 
+        var response = new MovieVM()
         {
             Id = existingMovie.Id,
             Description = existingMovie.Description,
@@ -97,17 +97,24 @@ public class MoviesController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    public async Task<IActionResult> Filter(string searchString) 
+    public async Task<IActionResult> Filter(string searchString)
     {
         var allMovies = await _service.GetAllAsync(m => m.Cinema);
-        
-        if (!string.IsNullOrEmpty(searchString.ToLower())) 
+
+        if (!string.IsNullOrEmpty(searchString.ToLower()))
         {
             var filteredResult = allMovies.Where(m => m.Name.ToLower().Contains(searchString)
                                                  || m.Description.ToLower().Contains(searchString))
                                                  .ToList();
-            return View("Index",filteredResult);
+            if (filteredResult.Any())
+            {
+                return View("Index", filteredResult);
+            }
+            else
+            {
+                return View("Index", allMovies);
+            }
         }
-        return View(allMovies);
+        return View("Index", allMovies);
     }
 }
