@@ -1,4 +1,5 @@
 using ECommerce.Data;
+using ECommerce.Data.Cart;
 using ECommerce.Data.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,8 +18,17 @@ public class Program
         builder.Services.AddScoped<ICinemasService, CinemasService>();
         builder.Services.AddScoped<IMoviesService, MoviesService>();
 
+        builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        builder.Services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
+
+        builder.Services.AddSession();
+
+
         builder.Services.AddControllersWithViews();
         builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer("Data Source=UY04-OGRT\\SQLEXPRESS;Initial Catalog=ECommerceDb;Integrated Security=True;Pooling=False;Encrypt=True;Trust Server Certificate=True"));
+       
+        
+        
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -34,6 +44,8 @@ public class Program
 
         app.UseRouting();
 
+        app.UseSession();
+        
         app.UseAuthorization();
 
         app.MapControllerRoute(

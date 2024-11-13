@@ -12,5 +12,5 @@ public class ShoppingCartItem : IEntityBase
 
     public int Amount { get; set; }
 
-    public int ShoppingCardId { get; set; }
+    public string ShoppingCardId { get; set; }
 }
