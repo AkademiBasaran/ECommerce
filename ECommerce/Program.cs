@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ECommerce;
 
 public class Program
-{ 
+{
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +17,7 @@ public class Program
         builder.Services.AddScoped<IProducersService, ProducersService>();
         builder.Services.AddScoped<ICinemasService, CinemasService>();
         builder.Services.AddScoped<IMoviesService, MoviesService>();
+        builder.Services.AddScoped<IOrdersService, OrdersService>();
 
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         builder.Services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
@@ -26,9 +27,9 @@ public class Program
 
         builder.Services.AddControllersWithViews();
         builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer("Data Source=UY04-OGRT\\SQLEXPRESS;Initial Catalog=ECommerceDb;Integrated Security=True;Pooling=False;Encrypt=True;Trust Server Certificate=True"));
-       
-        
-        
+
+
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -45,7 +46,7 @@ public class Program
         app.UseRouting();
 
         app.UseSession();
-        
+
         app.UseAuthorization();
 
         app.MapControllerRoute(

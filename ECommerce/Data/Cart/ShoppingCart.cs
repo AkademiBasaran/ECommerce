@@ -50,7 +50,8 @@ public class ShoppingCart
 
     public void RemoveItemFromCart(Movie movie)
     {
-        var shoppingCartItem = ShoppingCartItems.FirstOrDefault(x => x.Movie.Id == movie.Id
+        var shoppingCartItem = GetShoppingCartItems()
+                .FirstOrDefault(x => x.Movie.Id == movie.Id
                && x.ShoppingCardId == ShoppingCartId);
 
         if (shoppingCartItem is not null)
@@ -84,6 +85,17 @@ public class ShoppingCart
         return _context.ShoppingCartItems
                 .Where(n => n.ShoppingCardId == ShoppingCartId)
                 .Select(m => m.Movie.Price * m.Amount).Sum();
+    }
+
+
+    public async Task ClearShoppingCartAsync()
+    {
+        var items = await _context.ShoppingCartItems
+            .Where(n => n.ShoppingCardId == ShoppingCartId)
+            .ToListAsync();
+        
+        _context.ShoppingCartItems.RemoveRange(items);
+        await _context.SaveChangesAsync();
     }
 
 }
