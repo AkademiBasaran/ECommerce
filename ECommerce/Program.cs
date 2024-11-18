@@ -1,6 +1,9 @@
 using ECommerce.Data;
 using ECommerce.Data.Cart;
 using ECommerce.Data.Services;
+using ECommerce.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce;
@@ -22,13 +25,23 @@ public class Program
         builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         builder.Services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
 
+        builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>()
+    .AddDefaultTokenProviders();
+
+
+        //authentication and authorization
+        //builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDbContext>();
+        builder.Services.AddMemoryCache();
         builder.Services.AddSession();
+        builder.Services.AddAuthentication(option =>
+        {
+            option.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        });
 
 
         builder.Services.AddControllersWithViews();
         builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer("Data Source=UY04-OGRT\\SQLEXPRESS;Initial Catalog=ECommerceDb;Integrated Security=True;Pooling=False;Encrypt=True;Trust Server Certificate=True"));
-
-
 
         var app = builder.Build();
 
@@ -47,6 +60,7 @@ public class Program
 
         app.UseSession();
 
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapControllerRoute(
@@ -54,6 +68,7 @@ public class Program
             pattern: "{controller=Home}/{action=Index}/{id?}");
 
         AppDbInitializer.Seed(app);
+        AppDbInitializer.SeedUsersAndRolesAsync(app).GetAwaiter().GetResult();
 
         app.Run();
     }
