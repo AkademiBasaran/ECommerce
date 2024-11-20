@@ -315,7 +315,7 @@ public class AppDbInitializer
 
     public static async Task SeedUsersAndRolesAsync(IApplicationBuilder applicationBuilder)
     {
-        using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
+        using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope()) 
         {
             #region Roles
             var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
