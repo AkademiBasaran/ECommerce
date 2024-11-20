@@ -26,8 +26,8 @@ public class Program
         builder.Services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
 
         builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
-    .AddEntityFrameworkStores<AppDbContext>()
-    .AddDefaultTokenProviders();
+        .AddEntityFrameworkStores<AppDbContext>()
+        .AddDefaultTokenProviders();
 
 
         //authentication and authorization

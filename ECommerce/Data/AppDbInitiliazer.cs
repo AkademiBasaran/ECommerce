@@ -344,7 +344,7 @@ public class AppDbInitializer
                     EmailConfirmed = true
                 };
 
-                await userManager.CreateAsync(newAdminUser, "coding@1234");
+                IdentityResult result = await userManager.CreateAsync(newAdminUser, "Coding@1234");
                 await userManager.AddToRolesAsync(newAdminUser, new[] { UserRoles.Admin });
             }
 
@@ -362,7 +362,7 @@ public class AppDbInitializer
                     EmailConfirmed = true
                 };
 
-                await userManager.CreateAsync(newAppUser, "coding@1234");
+                await userManager.CreateAsync(newAppUser, "Coding@1234");
                 await userManager.AddToRolesAsync(newAppUser, new[] { UserRoles.User });
             }
 
