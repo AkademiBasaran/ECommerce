@@ -20,5 +20,34 @@ public class AccountsController : Controller
     }
 
     public IActionResult Login() => View(new LoginVM());
+
+    [HttpPost]
+    public async Task<IActionResult> Login(LoginVM login) 
+    {
+        if (!ModelState.IsValid) return View(login);
+
+        var user = await _userManager.FindByEmailAsync(login.EmailAddress);
+
+        if (user is not null)
+        {
+            var passwordCheck = await _userManager.CheckPasswordAsync(user, login.Password);
+            
+            if (passwordCheck)
+            {
+                var result = await _signInManager.PasswordSignInAsync(user, login.Password, false, false);
+                if (result.Succeeded) 
+                {
+                    return RedirectToAction("Index", "Movies");
+                }
+            }
+
+            TempData["Error"] = "Hatalı şifre";
+            return View(login);
+        }
+
+        TempData["Error"] = "Hatalı giriş";
+        return View(login);
+
+    }
     
 }
