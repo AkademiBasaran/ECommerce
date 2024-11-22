@@ -12,11 +12,15 @@
                         <div class="card-header text-white bg-info">
                             <p class="card-text">
                                 <h5 class="card-title">
-                                    <a class="text-white d-flex justify-content-end" 
-                                    asp-action="Edit" asp-route-id="@item.Id">
-                                    <i class="bi bi-pencil-square"></i>
-                                    @item.Name
-                                    </a>
+                                    @if (User.Identity.IsAuthenticated 
+                                    && User.IsInRole("admin"))
+                                    {
+                                        <a class="text-white d-flex justify-content-end"
+                                           asp-action="Edit" asp-route-id="@item.Id">
+                                            <i class="bi bi-pencil-square"></i>
+                                            @item.Name
+                                        </a>
+                                    }
                                 </h5>
                             </p>
                         </div>
@@ -55,7 +59,7 @@
                                 <a class="btn btn-outline-primary justify-content-end" asp-action="Details" asp-route-id="@item.Id">
                                     <i class="bi bi-eye-fill"></i> Show Details
                                 </a>
-                              
+
                                 <a class="btn btn-success text-white @((DateTime.Now > item.EndDate) ? "disabled" : "")"
                                    asp-controller="Orders"
                                    asp-action="AddItemToShoppingCart"

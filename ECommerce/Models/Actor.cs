@@ -14,7 +14,7 @@ public class Actor : IEntityBase
     public string ProfilePictureUrl { get; set; }
 
     [Display(Name = "Ad Soyad")]
-    [Required(ErrorMessage = "Ad Soyad Bilgisi Zorunludur.")]    
+    [Required(ErrorMessage = "Ad Soyad Bilgisi Zorunludur.")]
     public string FullName { get; set; }
 
     [Display(Name = "Biografi")]
